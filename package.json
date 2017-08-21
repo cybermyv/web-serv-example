@@ -1,0 +1,32 @@
+{
+    "name": "server-side-webapp",
+    "version": "1.0.0",
+    "description": "серверная часть калькулятора самозамеса",
+    "main": "server.js",
+    "scripts": {
+        "start": "nodemon --exec babel-node server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cybermyv/web-serv-example.git"
+    },
+    "author": "Mironov Y",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.17.2",
+        "express": "^4.15.4",
+        "sqlite3": "^3.1.9"
+    },
+    "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-preset-es2015": "^6.24.1",
+        "babel-preset-stage-0": "^6.24.1",
+        "babel-preset-stage-1": "^6.24.1",
+        "babel-preset-stage-2": "^6.24.1",
+        "babel-preset-stage-3": "^6.24.1"
+    },
+    "bugs": {
+        "url": "https://github.com/cybermyv/web-serv-example/issues"
+    },
+    "homepage": "https://github.com/cybermyv/web-serv-example#readme"
+}
