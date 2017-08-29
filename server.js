@@ -1,41 +1,27 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import db from './dbengine';
-
+import dbEngine from "./dbengine";
 
 const app = express();
 
 
-
-const path = __dirname + '/app';
-
-app.use(express.static(path));
-
-
-app.use(bodyParser.json);
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-app.get('/', async(req, res) => {
-    //res.send('hello world');
-    //res.sendFile('app/index.html', { root: __dirname });
-    //res.sendFile('index.html');
-    res.redirect('/list');
+app.get('/', async(req, res) =>
+    //    res.send('Hello World!')
+    res.redirect('/api/v01/list')
+);
+
+app.get('/api/v01/list', async(req, res) => {
+    dbEngine.getAllAromas((err, rec) => {
+        if (!err) return res.json(rec);
+    });
 });
 
-app.get('/list', function(req, res) {
-    // res.send('Переходв в /list');
-    return db.readAromas(function(err, recs) {
 
-        if (!err) {
-            return res.json(recs);
-            console.log(recs);
-        }
-    });
-})
-
-
-app.listen(8080, err => {
-    if (err) throw err;
-    console.log('Сервер стартовал по адресу: http://localhost:8080');
+const server = app.listen(3000, () => {
+    const { address, port } = server.address();
+    console.log(`Listening at http://localhost:${port}`);
 });
