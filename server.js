@@ -4,6 +4,8 @@ import dbEngine from "./dbengine";
 
 const app = express();
 
+const path = __dirname + '/app';
+app.use(express.static(path));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
