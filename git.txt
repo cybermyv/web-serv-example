@@ -1,0 +1,29 @@
+commit 70150d010c802889bde5252e52c91457619c7c97
+Author: Yuriy Mironov <git>
+Date:   Thu Sep 7 17:31:26 2017 +0400
+
+    [+] добавил счетчик дя выборки - убрать потом
+
+commit d505902fe1e70cdaf9e6fa66e0f42cfc55a1a637
+Author: Yuriy Mironov <git>
+Date:   Fri Sep 1 17:54:32 2017 +0400
+
+    [*] ---  что-то сделал
+
+commit 350c456877b6984e30266e54cd7f0c4320c23905
+Author: Yuriy Mironov <git>
+Date:   Tue Aug 29 14:56:40 2017 +0400
+
+    [*] выборка из базы
+
+commit fd03be350e7ce46b3aa787a0d25069302a7634a9
+Author: Yuriy Mironov <git>
+Date:   Tue Aug 22 17:57:51 2017 +0400
+
+    [+] добавил dbengin
+
+commit 18df54528802e6ab73c9cf500932d96f0b3f3ee9
+Author: Yuriy Mironov <git>
+Date:   Mon Aug 21 17:37:46 2017 +0400
+
+    [+] структура проекта, простой маршрут

@@ -17,3 +17,11 @@ exports.getAllAromas = function(callback) {
     let tQ = 'select * from aroma order by id';
     db.all(tQ, callback);
 };
+
+exports.createAroma = function(namerus, nameeng, callback) {
+    let tQ = ' insert into aroma (namerus, nameeng, manufacturer) values(?, ?, 1)';
+    db.run(tQ, [namerus, nameeng], err => {
+        if (!err) callback(null);
+    });
+
+};

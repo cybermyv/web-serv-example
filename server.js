@@ -13,15 +13,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', async(req, res) =>
     //    res.send('Hello World!')
-    res.redirect('/api/v01/list')
+    res.redirect('/api/v01/aroma')
 );
 
-app.get('/api/v01/list', async(req, res) => {
+app.get('/api/v01/aroma', async(req, res) => {
     dbEngine.getAllAromas((err, rec) => {
         if (!err) return res.json(rec);
     });
 });
 
+app.post('/api/v01/aroma', async(req, res) => {
+    dbEngine.createAroma(req.body.namerus, req.body.nameeng, err => {
+        if (err) throw err;
+        res.send('Insert aroma successfully');
+    });
+});
 
 const server = app.listen(3000, () => {
     const { address, port } = server.address();
