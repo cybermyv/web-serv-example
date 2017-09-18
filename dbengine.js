@@ -10,6 +10,7 @@ let db = new sqlite3.Database('./db/adb.db3', (err) => {
     }
     console.log('Connected to database! ');
 });
+
 exports.getAllAromas = function(callback) {
     queryCounter = queryCounter + 1;
     console.log(queryCounter, ' Start query');
@@ -24,4 +25,28 @@ exports.createAroma = function(namerus, nameeng, callback) {
         if (!err) callback(null);
     });
 
+};
+
+exports.deleteAroma = function(id, callback) {
+    let tQ = 'delete from aroma where id = ?';
+    db.run(tQ, [id], err => {
+        if (!err) callback(null);
+    });
+};
+
+exports.updateAroma = function(namerus, nameeng, manufacturer, id, callback) {
+    let tQ = 'update aroma set namerus = ?, nameeng=?, manufacturer = ? where id = ?';
+    db.run(tQ, [namerus, nameeng, manufacturer, id],
+        err => {
+            if (!err) callback(null);
+        });
+};
+exports.readAromaById = function(id, callback) {
+    let tQ = 'select * from aroma where id = ?';
+    db.each(tQ, [id], (err, row) => {
+        if (!err) {
+            //   console.log(row);
+            callback(null, row)
+        };
+    })
 };
