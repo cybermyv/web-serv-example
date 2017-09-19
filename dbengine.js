@@ -41,6 +41,7 @@ exports.updateAroma = function(namerus, nameeng, manufacturer, id, callback) {
             if (!err) callback(null);
         });
 };
+
 exports.readAromaById = function(id, callback) {
     let tQ = 'select * from aroma where id = ?';
     db.each(tQ, [id], (err, row) => {
@@ -48,5 +49,17 @@ exports.readAromaById = function(id, callback) {
             //   console.log(row);
             callback(null, row)
         };
+    })
+};
+
+exports.getMnufacturer = function(callback) {
+    console.log('1');
+
+    let tQ = 'select * from manufacturer';
+
+    //db.all(tQ, callback);
+    db.all(tQ, (err, rows) => {
+        console.log(rows);
+        if (!err) callback(null, rows);
     })
 };

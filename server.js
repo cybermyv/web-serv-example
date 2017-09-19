@@ -25,9 +25,21 @@ app.get('/', async(req, res) =>
 
 
 app.get('/api/v01/aroma', async(req, res) => {
-    dbEngine.getAllAromas((err, rec) => {
-        if (!err) return res.json(rec);
-    });
+    if (req.query.man) {
+        // console.log('!--');
+        dbEngine.getMnufacturer((err, rec) => {
+
+            if (err) throw err;
+
+            return res.json(rec);
+        });
+    } else {
+        dbEngine.getAllAromas((err, rec) => {
+            //  console.log(rec);
+            if (!err) return res.json(rec);
+        });
+    }
+
 });
 
 app.post('/api/v01/aroma', async(req, res) => {
@@ -65,7 +77,12 @@ app.put('/api/v01/aroma/:id', async(req, res) => {
     });
 });
 
-
+// app.get('/api/v01/aroma', async(req, res) => {
+//     dbEngine.getMnufacturer((err, rec) => {
+//         console.log(rec);
+//         if (!err) return res.json(rec);
+//     });
+// });
 const server = app.listen(3000, () => {
     const { address, port } = server.address();
     console.log(`Listening at http://localhost:${port}`);
