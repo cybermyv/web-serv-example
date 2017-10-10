@@ -19,9 +19,9 @@ exports.getAllAromas = function(callback) {
     db.all(tQ, callback);
 };
 
-exports.createAroma = function(namerus, nameeng, callback) {
-    let tQ = ' insert into aroma (namerus, nameeng, manufacturer) values(?, ?, 1)';
-    db.run(tQ, [namerus, nameeng], err => {
+exports.createAroma = function(namerus, nameeng, manufacturer, callback) {
+    let tQ = ' insert into aroma (namerus, nameeng, manufacturer) values(?, ?, ?)';
+    db.run(tQ, [namerus, nameeng, manufacturer], err => {
         if (!err) callback(null);
     });
 

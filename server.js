@@ -43,7 +43,7 @@ app.get('/api/v01/aroma', async(req, res) => {
 });
 
 app.post('/api/v01/aroma', async(req, res) => {
-    dbEngine.createAroma(req.body.namerus, req.body.nameeng, err => {
+    dbEngine.createAroma(req.body.namerus, req.body.nameeng, req.body.manufacturer, err => {
         if (err) throw err;
         res.send('Insert aroma successfully');
     });
