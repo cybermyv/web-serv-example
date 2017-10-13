@@ -53,13 +53,48 @@ exports.readAromaById = function(id, callback) {
 };
 
 exports.getMnufacturer = function(callback) {
-    console.log('1');
+    //console.log('1');
 
     let tQ = 'select * from manufacturer';
 
     //db.all(tQ, callback);
     db.all(tQ, (err, rows) => {
-        console.log(rows);
+        // console.log(rows);
         if (!err) callback(null, rows);
+    })
+};
+
+//-- Manufacturer
+
+exports.getAllMan = callback => {
+    let tQ = 'select * from manufacturer order by id';
+    db.all(tQ, callback);
+};
+exports.createMan = (name, url, callback) => {
+    let tQ = ' insert into manufacturer (name, url) values( ?, ?)';
+    db.run(tQ, [name, url], err => {
+        if (!err) callback(null); // -- переписать с try catch
+    });
+};
+
+exports.deleteMan = (id, callback) => {
+    let tQ = 'delete from manufacturer where id = ?';
+    db.run(tQ, [id], err => {
+        if (!err) callback(null);
+    });
+};
+exports.updateMan = (name, url, id, callback) => {
+    let tQ = 'update manufacturer set name = ?, url = ? where id = ?';
+    db.run(tQ, [name, url, id],
+        err => {
+            if (!err) callback(null);
+        });
+};
+exports.getManById = (id, callback) => {
+    let tQ = 'select * from manufacturer where id = ?';
+    db.each(tQ, [id], (err, row) => {
+        if (!err) {
+            callback(null, row)
+        };
     })
 };

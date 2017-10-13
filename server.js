@@ -77,12 +77,30 @@ app.put('/api/v01/aroma/:id', async(req, res) => {
     });
 });
 
-// app.get('/api/v01/aroma', async(req, res) => {
-//     dbEngine.getMnufacturer((err, rec) => {
-//         console.log(rec);
-//         if (!err) return res.json(rec);
-//     });
-// });
+//-- manufacturer
+app.get('/api/v01/manufacturer', async(req, res) => {
+
+    dbEngine.getAllMan((err, rec) => {
+        //if (!err) return res.json(rec);
+        //try написан не правильно, кажется. Нужно не проверять возможность вернуть json, а проверять возможность сделать запровс в базу
+        try {
+            return res.json(rec);
+        } catch (err) {
+            console.log('getAllMan - ошибка !');
+        }
+    });
+});
+
+app.delete('/api/v01/manufacturer/:id', async(req, res) => {
+    dbEngine.deleteMan(req.params.id,
+        err => {
+            if (err) throw err;
+            res.send('Delete manufacturer successfully');
+
+
+        });
+});
+
 const server = app.listen(3000, () => {
     const { address, port } = server.address();
     console.log(`Listening at http://localhost:${port}`);
