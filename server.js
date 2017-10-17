@@ -101,6 +101,32 @@ app.delete('/api/v01/manufacturer/:id', async(req, res) => {
         });
 });
 
+app.post('/api/v01/manufacturer', async(req, res) => {
+    dbEngine.createMan(req.body.name, req.body.url, err => {
+        if (err) throw err;
+        res.send('Insert manufacturer successfully');
+    });
+});
+
+
+app.get('/api/v01/manufacturer/:id', async(req, res) => {
+    return dbEngine.getManById(req.params.id,
+        (err, rec) => {
+            if (!err) {
+
+                return res.json(rec)
+            };
+        });
+});
+
+app.put('/api/v01/manufacturer/:id', async(req, res) => {
+    dbEngine.updateMan(req.body.name, req.body.url, req.body.id, err => {
+        if (err) throw err;
+        res.send('Update manufacturer successfully');
+    });
+});
+
+
 const server = app.listen(3000, () => {
     const { address, port } = server.address();
     console.log(`Listening at http://localhost:${port}`);
