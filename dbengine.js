@@ -1,6 +1,8 @@
 //-- должен быть класс для работы с базой данных.
 
 //import sqlite3 from 'sqlite3';
+import Reciept from "./reciept";
+
 const sqlite3 = require('sqlite3').verbose();
 var queryCounter = 0;
 
@@ -9,6 +11,16 @@ let db = new sqlite3.Database('./db/adb.db3', (err) => {
         return console.error(err.message);
     }
     console.log('Connected to database! ');
+    let rc = new Reciept;
+
+    rc.setAroma(1, 10);
+    rc.setAroma(3, 20);
+    rc.setAroma(4, 50);
+    rc.setAroma(5, 30);
+    // rc.setVolume(1, f, f);
+
+    console.log(rc.getVolume());
+    rc.getAllAromas();
 });
 
 exports.getAllAromas = function(callback) {
