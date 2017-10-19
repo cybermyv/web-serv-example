@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //     next();
 // };
 
+dbEngine.getAllReciepts();
 
 app.get('/', async(req, res) =>
     //    res.send('Hello World!')
@@ -39,7 +40,6 @@ app.get('/api/v01/aroma', async(req, res) => {
             if (!err) return res.json(rec);
         });
     }
-
 });
 
 app.post('/api/v01/aroma', async(req, res) => {

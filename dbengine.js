@@ -11,16 +11,17 @@ let db = new sqlite3.Database('./db/adb.db3', (err) => {
         return console.error(err.message);
     }
     console.log('Connected to database! ');
-    let rc = new Reciept;
 
-    rc.setAroma(1, 10);
-    rc.setAroma(3, 20);
-    rc.setAroma(4, 50);
-    rc.setAroma(5, 30);
-    // rc.setVolume(1, f, f);
+    // let rc = new Reciept;
 
-    console.log(rc.getVolume());
-    rc.getAllAromas();
+    // rc.setAroma(1, 10);
+    // rc.setAroma(3, 20);
+    // rc.setAroma(4, 50);
+    // rc.setAroma(5, 30);
+    // // rc.setVolume(1, f, f);
+
+    // console.log(rc.getVolume());
+    // rc.getAllAromas();
 });
 
 exports.getAllAromas = function(callback) {
@@ -110,3 +111,98 @@ exports.getManById = (id, callback) => {
         };
     })
 };
+
+//----работа с рецептами
+// exports.getAllMan = callback => {
+//     let tQ = 'select * from manufacturer order by id';
+//     db.all(tQ, callback);
+// };
+//-- прочитать все записи из рецепта
+
+exports.getAllReciepts = callback => {
+    let tMaster = 'select * from recmaster';
+    let tDetail = 'select * from recdetail where parentid = ?';
+
+    let allMaster = [];
+    let allDetail = [];
+
+    //--китайский способ
+    function main() {
+        return new Promise((resolve, reject) => {
+            db.all(tMaster, (err, rows) => {
+                if (err !== null) reject(err), retrun;
+
+                if (rows && rows.length > 0) {
+                    resolve(rows);
+                }
+
+            });
+        }); //Promise
+    }; //main
+
+    function detail(parentid) {
+        return new Promise((resolve, reject) => {
+            db.all(tDetail, [parentid], (err, rows) => {
+                if (err !== null) reject(err), retrun;
+
+                if (rows && rows.length > 0) {
+                    resolve(rows);
+                }
+
+            });
+        }); //Promise
+    }; //detail
+
+    async function readMain() {
+        allMaster = await main();
+        console.log('1', allMaster);
+
+        allDetail = await detail(allMaster[0].id);
+        console.log('2', allDetail);
+        //-- заполнене объекта данными
+        let rc = new Reciept;
+
+        rc.setReciept(allMaster[0].id, allMaster[0].name, allMaster[0].tag, allMaster[0].vol, allMaster[0].vg, allMaster[0].pg, allMaster[0].nic);
+
+        console.log(rc.getVolume());
+
+
+    }; //readMain
+    readMain();
+
+
+    //---китайский способ
+
+    //--TODO - вернуть объект из этого провайдера
+
+
+
+    // new Promise(function(res, rej) {
+    //     db.all(tMaster, [], (err, allMaster) => {
+    //     });
+    //     console.log('p1', allMaster);
+
+    // }).then(allMaster => {
+    //     console.log('p2', allMaster);
+    // });
+
+
+
+    // db.all(tMaster, [], (err, rows) => {
+    //     if (err) {
+    //         rc
+    //         throw err;
+    //     }
+    //     rows.forEach((row) => {
+    //         allMaster.push(row);
+    //         console.log(row);
+
+    //     });
+
+
+    // });
+
+
+
+
+}
