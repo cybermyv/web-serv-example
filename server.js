@@ -17,7 +17,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //     next();
 // };
 
-dbEngine.getAllReciepts();
+dbEngine.getAllReciepts((err, rec) => {
+    if (err) throw err;
+
+    //return res.json(rec);
+    console.log(rec);
+});
 
 app.get('/', async(req, res) =>
     //    res.send('Hello World!')

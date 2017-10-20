@@ -28,14 +28,20 @@ class Reciept {
         //--нужно проверить, есть ли такая аромка в массиве
         //-- значение val не могут быть меньше или равно нулю
 
-        this.aromas.push({ id, parent, aromaid, val });
+
+        if (this.aromas.findIndex(x => x.aromaid == aromaid) == -1) {
+            this.aromas.push({ id, parent, aromaid, val });
+        };
     }
 
     getAllAromas() {
         for (let i = 0; i < this.aromas.length; i++) {
-            console.log(`Аромка №- ${i} - ${this.aromas[i].id} - количество - ${this.aromas[i].val}`);
+            console.log(`Аромка №- ${this.aromas[i].id} - ${this.aromas[i].parent} - аромка -${this.aromas[i].aromaid}  количество - ${this.aromas[i].val}`);
         }
     }
+
+
+
 };
 
 export default Reciept;

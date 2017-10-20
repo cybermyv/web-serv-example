@@ -125,6 +125,7 @@ exports.getAllReciepts = callback => {
 
     let allMaster = [];
     let allDetail = [];
+    let allObj = [];
 
     //--китайский способ
     function main() {
@@ -148,60 +149,40 @@ exports.getAllReciepts = callback => {
                 if (rows && rows.length > 0) {
                     resolve(rows);
                 }
-
             });
         }); //Promise
     }; //detail
 
     async function readMain() {
+
         allMaster = await main();
-        console.log('1', allMaster);
 
-        allDetail = await detail(allMaster[0].id);
-        console.log('2', allDetail);
-        //-- заполнене объекта данными
-        let rc = new Reciept;
+        for (let j = 0; j < allMaster.length; j++) {
 
-        rc.setReciept(allMaster[0].id, allMaster[0].name, allMaster[0].tag, allMaster[0].vol, allMaster[0].vg, allMaster[0].pg, allMaster[0].nic);
+            let rc = new Reciept;
+            rc.setReciept(allMaster[j].id, allMaster[j].name, allMaster[j].tag, allMaster[j].vol, allMaster[j].vg, allMaster[j].pg, allMaster[j].nic);
 
-        console.log(rc.getVolume());
+            allDetail = await detail(allMaster[j].id);
 
+            //-- заполнене объекта данными
+            for (let i = 0; i < allDetail.length; i++) {
+                rc.setAroma(allDetail[i].id, allDetail[i].parentid, allDetail[i].aromaid, allDetail[i].val);
+            }
 
+            allObj.push(JSON.stringify(rc));
+        }
+
+        return allObj;
     }; //readMain
-    readMain();
+
+    //--TODO - вернуть объект из этого провайдера +
+    readMain().then(data => {
+        //  console.log(data);
+        callback(null, data)
+    });
 
 
     //---китайский способ
-
-    //--TODO - вернуть объект из этого провайдера
-
-
-
-    // new Promise(function(res, rej) {
-    //     db.all(tMaster, [], (err, allMaster) => {
-    //     });
-    //     console.log('p1', allMaster);
-
-    // }).then(allMaster => {
-    //     console.log('p2', allMaster);
-    // });
-
-
-
-    // db.all(tMaster, [], (err, rows) => {
-    //     if (err) {
-    //         rc
-    //         throw err;
-    //     }
-    //     rows.forEach((row) => {
-    //         allMaster.push(row);
-    //         console.log(row);
-
-    //     });
-
-
-    // });
-
 
 
 
