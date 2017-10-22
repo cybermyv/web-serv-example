@@ -17,12 +17,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //     next();
 // };
 
-dbEngine.getAllReciepts((err, rec) => {
-    if (err) throw err;
+// dbEngine.getAllReciepts((err, rec) => {
+//     if (err) throw err;
 
-    //return res.json(rec);
-    console.log(rec);
-});
+//     //return res.json(rec);
+//     console.log(rec);
+// });
 
 app.get('/', async(req, res) =>
     //    res.send('Hello World!')
@@ -130,7 +130,14 @@ app.put('/api/v01/manufacturer/:id', async(req, res) => {
         res.send('Update manufacturer successfully');
     });
 });
+//--вывод рецептов
 
+app.get('/api/v01/reciept', async(req, res) => {
+    
+        dbEngine.getAllReciepts((err, rec) => {
+            if (!err) return res.json(rec);
+        });
+    });
 
 const server = app.listen(3000, () => {
     const { address, port } = server.address();
