@@ -131,7 +131,8 @@ exports.getAllReciepts = callback => {
     function main() {
         return new Promise((resolve, reject) => {
             db.all(tMaster, (err, rows) => {
-                if (err !== null) reject(err), retrun;
+                if (err !== null) reject(err);
+                //return;
 
                 if (rows && rows.length > 0) {
                     resolve(rows);
@@ -143,15 +144,35 @@ exports.getAllReciepts = callback => {
 
     function detail(parentid) {
         return new Promise((resolve, reject) => {
-            db.all(tDetail, [parentid], (err, rows) => {
-                if (err !== null) reject(err), retrun;
 
-                if (rows && rows.length > 0) {
+            db.all(tDetail, [parentid], (err, rows) => {
+
+                if (err !== null) reject(err);
+
+                // return;
+
+                if (rows && rows.length > 0) { //- условие не работает, если в массиве нет записей. 
                     resolve(rows);
                 }
             });
         }); //Promise
     }; //detail
+
+    function aromaById(id) {
+        return new Promise((resolve, reject) => {
+            db.get('select * from aroma where id = ?', [id], (err, row) => {
+                if (err !== null) {
+                    reject(err);
+                };
+
+                if (row) {
+                    resolve(row)
+                };
+
+            });
+        }); //Promise
+    } //aromaById
+
 
     async function readMain() {
 
@@ -164,12 +185,16 @@ exports.getAllReciepts = callback => {
 
             allDetail = await detail(allMaster[j].id);
 
+
+
             //-- заполнене объекта данными
             for (let i = 0; i < allDetail.length; i++) {
-                rc.setAroma(allDetail[i].id, allDetail[i].parentid, allDetail[i].aromaid, allDetail[i].val);
-            }
 
-            allObj.push(JSON.stringify(rc));
+                let aromaId = await aromaById(allDetail[i].aromaid);
+
+                rc.setAroma(allDetail[i].id, allDetail[i].parentid, allDetail[i].aromaid, allDetail[i].val, aromaId.namerus, aromaId.nameeng);
+            };
+            allObj.push(rc);
         }
 
         return allObj;

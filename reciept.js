@@ -24,19 +24,20 @@ class Reciept {
         return `Название - ${ this.name}, метка -${ this.tag},  Общий объем - ${this.vol} мл, VG- ${this.vg}%, PG- ${this.pg}%, никотин - ${this.n}мг`
     }
 
-    setAroma(id, parent, aromaid, val = 0) {
+    setAroma(id, parent, aromaid, val = 0, nrus, neng) {
         //--нужно проверить, есть ли такая аромка в массиве
         //-- значение val не могут быть меньше или равно нулю
+        // -- нужно сеттить название аромки.
 
 
         if (this.aromas.findIndex(x => x.aromaid == aromaid) == -1) {
-            this.aromas.push({ id, parent, aromaid, val });
+            this.aromas.push({ id, parent, aromaid, val, nrus, neng });
         };
     }
 
     getAllAromas() {
         for (let i = 0; i < this.aromas.length; i++) {
-            console.log(`Аромка №- ${this.aromas[i].id} - ${this.aromas[i].parent} - аромка -${this.aromas[i].aromaid}  количество - ${this.aromas[i].val}`);
+            console.log(`Аромка №- ${this.aromas[i].id} - ${this.aromas[i].parent} - аромка -${this.aromas[i].aromaid}  количество - ${this.aromas[i].val} ${this.nrus} ${this.neng}`);
         }
     }
 
