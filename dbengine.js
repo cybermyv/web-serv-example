@@ -113,10 +113,6 @@ exports.getManById = (id, callback) => {
 };
 
 //----работа с рецептами
-// exports.getAllMan = callback => {
-//     let tQ = 'select * from manufacturer order by id';
-//     db.all(tQ, callback);
-// };
 //-- прочитать все записи из рецепта
 
 exports.getAllReciepts = callback => {
@@ -132,25 +128,17 @@ exports.getAllReciepts = callback => {
         return new Promise((resolve, reject) => {
             db.all(tMaster, (err, rows) => {
                 if (err !== null) reject(err);
-                //return;
-
                 if (rows && rows.length > 0) {
                     resolve(rows);
                 }
-
             });
         }); //Promise
     }; //main
 
     function detail(parentid) {
         return new Promise((resolve, reject) => {
-
             db.all(tDetail, [parentid], (err, rows) => {
-
                 if (err !== null) reject(err);
-
-                // return;
-
                 if (rows && rows.length > 0) { //- условие не работает, если в массиве нет записей. 
                     resolve(rows);
                 }
@@ -182,21 +170,14 @@ exports.getAllReciepts = callback => {
 
             let rc = new Reciept;
             rc.setReciept(allMaster[j].id, allMaster[j].name, allMaster[j].tag, allMaster[j].vol, allMaster[j].vg, allMaster[j].pg, allMaster[j].nic);
-
             allDetail = await detail(allMaster[j].id);
-
-
-
             //-- заполнене объекта данными
             for (let i = 0; i < allDetail.length; i++) {
-
                 let aromaId = await aromaById(allDetail[i].aromaid);
-
                 rc.setAroma(allDetail[i].id, allDetail[i].parentid, allDetail[i].aromaid, allDetail[i].val, aromaId.namerus, aromaId.nameeng);
             };
             allObj.push(rc);
         }
-
         return allObj;
     }; //readMain
 
@@ -209,6 +190,58 @@ exports.getAllReciepts = callback => {
 
     //---китайский способ
 
+    exports.createReciept = (name, tag, vol, vg, pg, nic, callback) => {
+        //-- пока без аромок
+
+        // db.run(tQ, [name, tag, vol, vg, pg, nic], err => {
+        //     if (!err) callback(null); // чот я не понял, а куда объект девать?
+        // });
+
+        function insertMaster() {
+            return new Promise((resolve, reject) => {
+                let tQ = ' insert into recmaster (name, tag, vol, vg, pg, nic) values( ?, ?, ?, ?, ?, ?)';
+                db.run(tQ, [name, tag, vol, vg, pg, nic], err => {
+                    if (!err) resolve(null);
+                });
+
+            }); //Promise
+        }; //insertMaster
+
+
+        //-- нужно найти id последней записи в базе
+
+
+        function main() {
+            return new Promise((resolve, reject) => {
+                let tMaster = 'select * from recmaster order by id';
+                db.all(tMaster, (err, rows) => {
+                    if (err !== null) reject(err);
+                    if (rows && rows.length > 0) {
+                        resolve(rows);
+                    }
+                });
+            }); //Promise
+        }; //main
+
+        async function readMain() {
+
+            await insertMaster();
+
+            let allMaster = await main();
+            let idCount = allMaster[allMaster.length - 1];
+            console.log('idCount', idCount.id);
+
+            //   return idCount;
+
+        }; //readMain
+
+        readMain().then(data => {
+            // console.log('idCount', data);
+            callback(null)
+        });
+
+
+    };
 
 
 }

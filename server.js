@@ -133,11 +133,19 @@ app.put('/api/v01/manufacturer/:id', async(req, res) => {
 //--вывод рецептов
 
 app.get('/api/v01/reciept', async(req, res) => {
-    
-        dbEngine.getAllReciepts((err, rec) => {
-            if (!err) return res.json(rec);
-        });
+
+    dbEngine.getAllReciepts((err, rec) => {
+        if (!err) return res.json(rec);
     });
+});
+
+app.post('/api/v01/reciept', async(req, res) => {
+    dbEngine.createReciept(req.body.name, req.body.tag, req.body.vol, req.body.vg, req.body.pg, req.body.nic, err => {
+        if (err) throw err;
+        res.send('Insert reciept successfully');
+    });
+});
+
 
 const server = app.listen(3000, () => {
     const { address, port } = server.address();
