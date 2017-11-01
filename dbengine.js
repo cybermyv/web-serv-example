@@ -190,12 +190,23 @@ exports.getAllReciepts = callback => {
 
     //---китайский способ
 
-    exports.createReciept = (name, tag, vol, vg, pg, nic, callback) => {
+    exports.createReciept = (name, tag, vol, vg, pg, nic, choices, callback) => {
+        //-- потом переделать на передачу объекта
         //-- пока без аромок
-
+        console.log(choices);
         // db.run(tQ, [name, tag, vol, vg, pg, nic], err => {
         //     if (!err) callback(null); // чот я не понял, а куда объект девать?
         // });
+
+        function insertDetail(parentid, aromaid, val) {
+            return new Promise((resolve, reject) => {
+                let tQ = 'insert into recdetail (parentid, aromaid, val)values( ?, ?, ?)';
+                db.run(tQ, [parentid, aromaid, val], err => {
+                    if (!err) resolve(null);
+                });
+
+            }); //Promise 
+        }; // insertDetail
 
         function insertMaster() {
             return new Promise((resolve, reject) => {
@@ -229,7 +240,13 @@ exports.getAllReciepts = callback => {
 
             let allMaster = await main();
             let idCount = allMaster[allMaster.length - 1];
-            console.log('idCount', idCount.id);
+
+            //-- цикл по всему массиву chices
+            for (let i = 0; i < choices.length; i++) {
+                await insertDetail(idCount.id, choices[i].id, choices[i].val);
+            }
+
+            // console.log('idCount', idCount.id);
 
             //   return idCount;
 

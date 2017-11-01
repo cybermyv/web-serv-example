@@ -140,7 +140,7 @@ app.get('/api/v01/reciept', async(req, res) => {
 });
 
 app.post('/api/v01/reciept', async(req, res) => {
-    dbEngine.createReciept(req.body.name, req.body.tag, req.body.vol, req.body.vg, req.body.pg, req.body.nic, err => {
+    dbEngine.createReciept(req.body.name, req.body.tag, req.body.vol, req.body.vg, req.body.pg, req.body.nic, req.body.choices, err => {
         if (err) throw err;
         res.send('Insert reciept successfully');
     });
